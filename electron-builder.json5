@@ -1,0 +1,52 @@
+{
+  "appId": "what-rpa",
+  "asar": true,
+  "directories": {
+    "output": "build/release/${version}"
+  },
+  // 打包时需要包含的文件目录，这里包含了应用的前端和 Electron 主进程的代码。
+  "files": [
+    "build/dist-electron", // Electron 主进程代码所在目录
+    "build/dist" // 前端代码所在目录
+  ],
+
+  // macOS 平台的打包配置
+  "mac": {
+    // 输出的文件名格式，`${productName}` 和 `${version}` 会分别替换为应用名称和版本号。
+    "artifactName": "${productName}_${version}.${ext}",
+    // 指定要生成的包类型，这里选择了 `dmg`（安装包）和 `zip`（压缩包）。
+    "target": [
+      "dmg",
+      "zip"
+    ]
+  },
+
+  // Windows 平台的打包配置
+  "win": {
+    // 目标类型为 `nsis` 安装包，架构为 `x64`，即 64 位系统支持。
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "artifactName": "${productName}_${version}.${ext}" // 输出文件的命名格式
+  },
+
+  // NSIS 安装包的详细配置（主要用于 Windows）
+  "nsis": {
+    "oneClick": false, // 设置为 `false` 表示不是一键安装，用户可以选择安装路径
+    "perMachine": false, // 用户安装时可选择是否为所有用户安装，`false` 表示仅为当前用户安装
+    "allowToChangeInstallationDirectory": true, // 是否允许用户更改安装路径
+    "deleteAppDataOnUninstall": false // 卸载时是否删除应用的 AppData 数据
+  },
+
+  // 发布相关的配置，用于自动更新或托管应用版本
+  "publish": {
+    "provider": "generic", // 通用的发布提供者，可以托管到任意支持下载的 URL
+    "channel": "latest", // 更新频道名称，通常为 `latest` 表示最新稳定版本
+    "url": "https://github.com/electron-vite/electron-vite-react/releases/download/v0.9.9/" // 应用程序发布的 URL
+  }
+}
